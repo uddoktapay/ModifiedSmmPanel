@@ -62,10 +62,15 @@ if (!isset($data['status']) && !isset($data['metadata']['order_id'])) {
 
 if (isset($data['status']) && $data['status'] == 'COMPLETED') {
     $orderId = $data['metadata']['order_id'];
+    $userId = $data['metadata']['client_id'];
     $paymentDetails = $conn->prepare("SELECT * FROM payments WHERE payment_extra=:orderId");
     $paymentDetails->execute([
         "orderId" => $orderId
     ]);
+    
+    $user = $conn->prepare("SELECT * FROM clients WHERE client_id=:id");
+    $user->execute(array("id"=>$userId ));
+    $user = $user->fetch(PDO::FETCH_ASSOC);
 
     if ($paymentDetails->rowCount()) {
         $paymentDetails = $paymentDetails->fetch(PDO::FETCH_ASSOC);
@@ -116,6 +121,9 @@ if (isset($data['status']) && $data['status'] == 'COMPLETED') {
         errorExit("Order ID not found.");
     }
 }
+
+header("Location: " . site_url("addfunds"));
+exit();
 
 http_response_code(405);
 die();
