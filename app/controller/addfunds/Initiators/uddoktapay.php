@@ -39,7 +39,8 @@ $requestData = [
     'email'         => $payeeEmail,
     'amount'        => round($paymentAmount * $exchangeRate, 2),
     'metadata'      => [
-        'order_id' => $orderId
+        'order_id' => $orderId,
+        'client_id' => $user["client_id"]
     ],
     'redirect_url'  => $paymentURL,
     'return_type'   => 'GET',
@@ -74,11 +75,8 @@ if ($err) {
     $result = json_decode($upresponse, true);
     if (isset($result['status']) && isset($result['payment_url'])) {
         $paymentUrl = $result['payment_url'];
-        $redirectForm .= '<form method="GET" action=" ' . $paymentUrl . '" name="uddoktapayCheckoutForm">';
-        $redirectForm .= '</form>
-        <script type="text/javascript">
-        document.uddoktapayCheckoutForm.submit();
-        </script>';
+        header("Location: $paymentUrl");
+        exit();
     } else {
         errorExit($result['message']);
     }
