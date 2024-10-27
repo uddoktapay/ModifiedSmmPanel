@@ -75,8 +75,11 @@ if ($err) {
     $result = json_decode($upresponse, true);
     if (isset($result['status']) && isset($result['payment_url'])) {
         $paymentUrl = $result['payment_url'];
-        header("Location: $paymentUrl");
-        exit();
+        $redirectForm .= '<form method="GET" action=" ' . $paymentUrl . '" name="uddoktapayCheckoutForm">';
+        $redirectForm .= '</form>
+        <script type="text/javascript">
+        document.uddoktapayCheckoutForm.submit();
+        </script>';
     } else {
         errorExit($result['message']);
     }
