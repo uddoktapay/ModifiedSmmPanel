@@ -115,7 +115,8 @@ if (isset($data['status']) && $data['status'] == 'COMPLETED') {
             header("Location: " . site_url("addfunds"));
             exit();
         } else {
-            errorExit("Order ID is already used.");
+            header("Location: " . site_url("addfunds"));
+            exit();
         }
     } else {
         errorExit("Order ID not found.");
