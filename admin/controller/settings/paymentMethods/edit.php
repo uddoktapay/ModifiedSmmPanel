@@ -19,7 +19,8 @@ $automaticMethods = [
     16,
     17,
     18,
-    20
+    20,
+    21
 ];
 
 $allMethods = array_merge($automaticMethods, $manualMethods);

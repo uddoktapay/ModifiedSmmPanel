@@ -177,6 +177,15 @@ if ($methodId == 20) {
     ];
 }
 
+if ($methodId == 21) {
+    $apiKey = htmlspecialchars($_POST["api_key"]);
+    $apiUrl = htmlspecialchars($_POST["api_url"]);
+    $methodExtras = [
+        "api_key" => $apiKey,
+        "api_url" => $apiUrl
+    ];
+}
+
 $methodExtras = json_encode($methodExtras);
 $update = $conn->prepare("UPDATE paymentmethods SET methodExtras=:extras WHERE methodId=:id");
 $update->execute([

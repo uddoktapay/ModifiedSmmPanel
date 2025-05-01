@@ -141,3 +141,9 @@ if($selectedMethod == 20){
     $formData .= $feeField;
     $formData .= replaceText($paymentBtn,"Initiate Payment");
 }
+
+if($selectedMethod == 21){
+    $formData .= $amountField;
+    $formData .= $feeField;
+    $formData .= replaceText($paymentBtn,"Initiate Payment");
+}

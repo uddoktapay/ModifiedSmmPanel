@@ -124,6 +124,10 @@ if ($paymentMethod->rowCount()) {
         require("payment/uddoktapay.php");
         exit;
     }
+    if ($callbackSlug == "uddoktapayint") {
+        require("payment/uddoktapayint.php");
+        exit;
+    }
 } else {
     errorExit("Invalid payment method callback.");
 }

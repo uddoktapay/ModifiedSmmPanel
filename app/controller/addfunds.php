@@ -164,6 +164,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($method["methodId"] == 20) {
             require("addfunds/Initiators/uddoktapay.php");
         }
+        if ($method["methodId"] == 21) {
+            require("addfunds/Initiators/uddoktapayint.php");
+        }
         header("Content-Type: application/json; charset=utf-8");
         echo json_encode($response, true);
         exit;

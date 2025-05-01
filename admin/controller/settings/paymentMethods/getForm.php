@@ -193,4 +193,11 @@ if ($method["methodId"] == 20) {
     <input type="text"  name="exchange_rate" class="form-control" value="' . $methodExtras["exchange_rate"] . '"/></div>';
 }
 
+if ($method["methodId"] == 21) {
+    $form .= '<div class="form-group mb-3"><label class="form-label">API Key</label>
+    <input type="text"  name="api_key" class="form-control" value="' . $methodExtras["api_key"] . '"/></div>';
+    $form .= '<div class="form-group mb-3"><label class="form-label">API URL</label>
+    <input type="text"  name="api_url" class="form-control" value="' . $methodExtras["api_url"] . '"/></div>';
+}
+
 $form .= '<div class="custom-modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>&nbsp;&nbsp;<button type="submit" data-loading-text="Updating..." class="btn btn-primary">Edit</button></div></form>';
