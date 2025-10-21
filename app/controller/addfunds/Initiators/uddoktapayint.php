@@ -39,7 +39,7 @@ $requestData = [
     'amount'        => $paymentAmount,
     'metadata'      => [
         'order_id' => $orderId,
-        'client_id' => $user["client_id"]
+        'user_id' => $user["client_id"]
     ],
     'redirect_url'  => $paymentURL,
     'return_type'   => 'GET',
