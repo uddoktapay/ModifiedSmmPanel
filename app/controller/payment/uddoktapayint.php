@@ -62,23 +62,25 @@ if (!isset($data['status']) && !isset($data['metadata']['order_id'])) {
 
 if (isset($data['status']) && $data['status'] == 'COMPLETED') {
     $orderId = $data['metadata']['order_id'];
-    $userId = $data['metadata']['client_id'];
+    $userId = $data['metadata']['user_id'];
     $paymentDetails = $conn->prepare("SELECT * FROM payments WHERE payment_extra=:orderId");
     $paymentDetails->execute([
         "orderId" => $orderId
     ]);
     
-    $user = $conn->prepare("SELECT * FROM clients WHERE client_id=:id");
-    $user->execute(array("id"=>$userId ));
-    $user = $user->fetch(PDO::FETCH_ASSOC);
+    $userDetails = $conn->prepare("SELECT * FROM clients WHERE client_id=:userId");
+    $userDetails->execute([
+        "userId" => $userId
+    ]);
 
     if ($paymentDetails->rowCount()) {
         $paymentDetails = $paymentDetails->fetch(PDO::FETCH_ASSOC);
+        $userDetails = $userDetails->fetch(PDO::FETCH_ASSOC);
         if (
             !countRow([
                 'table' => 'payments',
                 'where' => [
-                    'client_id' => $user['client_id'],
+                    'client_id' => $userId,
                     'payment_method' => $methodId,
                     'payment_status' => 3,
                     'payment_delivery' => 2,
@@ -101,7 +103,7 @@ if (isset($data['status']) && $data['status'] == 'COMPLETED') {
                     payment_status=:status, 
                     payment_delivery=:delivery WHERE payment_id=:id');
             $update->execute([
-                'balance' => $user["balance"],
+                'balance' => $userDetails["balance"],
                 'status' => 3,
                 'delivery' => 2,
                 'id' => $paymentDetails['payment_id']
@@ -109,8 +111,8 @@ if (isset($data['status']) && $data['status'] == 'COMPLETED') {
 
             $balance = $conn->prepare('UPDATE clients SET balance=:balance WHERE client_id=:id');
             $balance->execute([
-                "balance" => $user["balance"] + $paidAmount,
-                "id" => $user["client_id"]
+                "balance" => $userDetails["balance"] + $paidAmount,
+                "id" => $userDetails["client_id"]
             ]);
             header("Location: " . site_url("addfunds"));
             exit();
