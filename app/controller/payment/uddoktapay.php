@@ -16,8 +16,17 @@ if (empty($invoice_id)) {
 }
 
 $apiKey =  trim($methodExtras['api_key']);
-$host = parse_url(trim($methodExtras['api_url']),  PHP_URL_HOST);
-$apiUrl = "https://{$host}/api/verify-payment";
+
+$baseURL = rtrim(trim($methodExtras['api_url']), '/');
+$apiSegmentPosition = strpos($baseURL, '/api/');
+
+if ($apiSegmentPosition !== false) {
+    $baseURL = substr($baseURL, 0, $apiSegmentPosition + 5);
+} elseif (($apiSegmentPosition = strpos($baseURL, '/api')) !== false) {
+    $baseURL = substr($baseURL, 0, $apiSegmentPosition + 4);
+}
+
+$apiUrl = $baseURL . 'verify-payment';
 
 $invoice_data = [
     'invoice_id' => $invoice_id
