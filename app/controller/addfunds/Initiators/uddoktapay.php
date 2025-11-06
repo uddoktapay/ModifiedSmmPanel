@@ -48,8 +48,16 @@ $requestData = [
     'webhook_url'   => $paymentURL
 ];
 
-$host = parse_url($apiUrl,  PHP_URL_HOST);
-$postUrl = "https://{$host}/api/checkout-v2";
+$baseURL = rtrim($apiUrl, '/');
+$apiSegmentPosition = strpos($baseURL, '/api/');
+
+if ($apiSegmentPosition !== false) {
+    $baseURL = substr($baseURL, 0, $apiSegmentPosition + 5);
+} elseif (($apiSegmentPosition = strpos($baseURL, '/api')) !== false) {
+    $baseURL = substr($baseURL, 0, $apiSegmentPosition + 4);
+}
+
+$postUrl = $baseURL . 'checkout-v2';
 
 $curl = curl_init();
 
